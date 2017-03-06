@@ -1,0 +1,33 @@
+<faces-config version="2.2"
+              xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
+    <managed-bean>
+        <managed-bean-name>MbFirma</managed-bean-name>
+        <managed-bean-class>cl.cla.web.firma.mb.MbFirma</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+  <!--  <managed-bean>
+        <managed-bean-name>MbSolicitudAsimuPer</managed-bean-name>
+        <managed-bean-class>cl.gob.ips.tramiteenlinea.mb.MbSolicitudAsimuPer</managed-bean-class>
+    
+        <managed-bean-scope>session</managed-bean-scope></managed-bean>
+    <managed-bean>
+        <managed-bean-name>MbSolicitudAsimuEmp</managed-bean-name>
+        <managed-bean-class>cl.gob.ips.tramiteenlinea.mb.MbSolicitudAsimuEmp</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>-->
+<!--
+    <render-kit>
+        <renderer>
+            <component-family>javax.faces.Input</component-family>
+            <renderer-type>javax.faces.Text</renderer-type>
+            <renderer-class>cl.gob.ips.tramiteenlinea.render.InputTextRenderer</renderer-class>
+        </renderer>
+        <renderer>
+            <component-family>javax.faces.SelectOne</component-family>
+            <renderer-type>javax.faces.Radio</renderer-type>
+            <renderer-class>cl.gob.ips.tramiteenlinea.render.InputRadioRenderer</renderer-class>
+        </renderer>
+    </render-kit>-->
+</faces-config>

@@ -1,0 +1,258 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <f:metadata>
+        <f:event type="preRenderView" listener="#{MbFirma.consultarDocumentos()}" />
+    </f:metadata>
+    <h:head>
+        <title>Facelet Title</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=7,8,9,10,edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <h:outputScript name="jsf.js" library="javax.faces"/>
+        <script src="js/jquery-1.11.3.min.js" type="text/javascript"/>
+        <meta charset="utf-8"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+              crossorigin="anonymous"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+              crossorigin="anonymous"/>
+        <link rel="stylesheet" href="css/style.css" />
+
+        <script type="text/javascript">
+            function errorIniciarTOC() {
+                // Metodo que se invoca al iniciar el Applet y sirve para informar el status del inicio
+                $('#formDocumentos\\:estadoInicioApplet').val(document.myApplet.getStatusInicioApplet());
+                $('#formDocumentos\\:estadoRegistro').val(document.myApplet.getStatusRegistro());
+                $('#formDocumentos\\:estadoCargaVista').val(document.myApplet.getStatusVista());
+
+                alert("Estado inicio Applet: " + document.myApplet.getStatusInicioApplet() +
+                        "\nEstado Registro TOC: " + document.myApplet.getStatusRegistro() +
+                        "\nEstado carga vista TOC: " + document.myApplet.getStatusVista()
+                        );
+            }
+
+            function errorInitSecuGen() {
+                // Metodo que se invoca cuando ha ocurrido un error al iniciar el lector de huellas
+
+                alert("Ha ocurrido un error al iniciar el lector de huellas");
+            }
+
+            function errorInitBarcodeReader() {
+                // Metodo que se invoca cuando ha ocurrido un error al iniciar el lector de codigos de barras
+
+                alert("Ha ocurrido un error al iniciar el lector de cedulas de identidad");
+            }
+
+            function nuevaVerificacion($run, $textoCabecera) {
+                document.myApplet.setDataNuevaVerificacion($run, $textoCabecera);
+            }
+
+            function cancelarTOC() {
+                // Metodo que se invoca al momento de presionar el boton de cerrar
+
+                alert("Se ha presionado el boton Cancelar TOC");
+            }
+
+            function cedulaLeida() {
+                // Metodo que se invoca al momento de leer una cedula de identidad
+
+                alert("Run corresponde: " + document.myApplet.getRunCorresponde());
+                if (!document.myApplet.getRunCorresponde()) {
+                    // document.myApplet.cleanFormularioTOC();
+                }
+            }
+
+            function initVerificacionIdentidadTOC() {
+                // Metodo que se invoca al momento de iniciar la verificacion de identidad TOC
+            }
+
+            function verificacionIdentidadTOC() {
+                // Metodo que se invoca al momento de obtener una verificacion de identidad TOC
+                $('#formDocumentos\\:tipoCedula').val(document.myApplet.isNewID());
+                document.getElementById("formDocumentos:btnFirma").disabled = false;
+                if (document.myApplet.isNewID()) {
+
+
+                    $('#formDocumentos\\:apellidos').val(document.myApplet.getApellidosNewCI());
+                    $('#formDocumentos\\:ciVencida').val(document.myApplet.getCIVencidaNewCI());
+                    $('#formDocumentos\\:nacionalidad').val(document.myApplet.getNacionalidadNewCI());
+                    $('#formDocumentos\\:fechaNacimiento').val(document.myApplet.getFechaNacimientoNewCI());
+                    $('#formDocumentos\\:fechaVencimiento').val(document.myApplet.getFechaVencimientoNewCI());
+                    $('#formDocumentos\\:genero').val(document.myApplet.getGeneroNewCI());
+                    $('#formDocumentos\\:nombres').val(document.myApplet.getNombresNewCI());
+                    $('#formDocumentos\\:numeroSerie').val(document.myApplet.getNSerieNewCI());
+                    $('#formDocumentos\\:numeroTransaccion').val(document.myApplet.getNTransaccionNewCI());
+                    $('#formDocumentos\\:resultadoTransaccion').val(document.myApplet.getResultadoVerificacionNewCI());
+                    $('#formDocumentos\\:run').val(document.myApplet.getRunNewCI());
+                    alert("Resultado Operacion: " + document.myApplet.getCodigoRespuestaNewCI() +
+                            "\nRun: " + document.myApplet.getRunNewCI() +
+                            "\nNombres: " + document.myApplet.getNombresNewCI() +
+                            "\nApellidos: " + document.myApplet.getApellidosNewCI() +
+                            "\nGenero: " + document.myApplet.getGeneroNewCI() +
+                            "\nNacionalidad: " + document.myApplet.getNacionalidadNewCI() +
+                            "\nFecha Nacimiento: " + document.myApplet.getFechaNacimientoNewCI() +
+                            "\nFecha Vencimiento CI: " + document.myApplet.getFechaVencimientoNewCI() +
+                            "\nNumero Serie CI: " + document.myApplet.getNSerieNewCI() +
+                            "\nNumero Transaccion TOC: " + document.myApplet.getNTransaccionNewCI() +
+                            "\nResultado Transaccion: " + document.myApplet.getResultadoVerificacionNewCI() +
+                            "\nCI Vencida: " + document.myApplet.getCIVencidaNewCI());
+                } else {
+
+                    alert("Resultado Operacion: " + document.myApplet.getCodigoRespuesta() +
+                            "\nRun: " + document.myApplet.getRut() +
+                            "\nApellido Paterno: " + document.myApplet.getApellidoPaterno() +
+                            "\nNombre Completo: " + document.myApplet.getNombreCompleto() +
+                            "\nNacionalidad: " + document.myApplet.getNacionalidad() +
+                            "\nFecha Vencimiento CI: " + document.myApplet.getFechaVence() +
+                            "\nNumero Serie CI: " + document.myApplet.getNumeroSerie() +
+                            "\nPuntaje TOC: " + document.myApplet.getResultadoTrx() +
+                            "\nNumero Transaccion TOC: " + document.myApplet.getNTransaccion() +
+                            "\nResultado Transaccion: " + document.myApplet.getResultadoTRX() +
+                            "\nCI Vencida: " + document.myApplet.getCIVencida());
+
+                    $('#formDocumentos\\:apellidos').val(document.myApplet.getApellidoPaterno());
+                    $('#formDocumentos\\:ciVencida').val(document.myApplet.getCIVencida());
+                    $('#formDocumentos\\:nacionalidad').val(document.myApplet.getNacionalidad());
+                    $('#formDocumentos\\:fechaVencimiento').val(document.myApplet.getFechaVence());
+                    $('#formDocumentos\\:nombres').val(document.myApplet.getNombreCompleto());
+                    $('#formDocumentos\\:numeroTransaccion').val(document.myApplet.getNTransaccion());
+                    $('#formDocumentos\\:resultadoTransaccion').val(document.myApplet.getResultadoTRX());
+                    $('#formDocumentos\\:run').val(document.myApplet.getRut());
+                }
+            }
+        </script>
+
+    </h:head>
+    <h:body>
+        <h:form id="formDocumentos">
+            <div class="container-fluid">
+                <hr />
+
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h5 class="panel-title">1.- Identificacion de la Oferta</h5>
+
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <div class="col-lg-5 col-md-5 col-sm-5">
+                                    <div class="row">
+                                        <button type="button" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-repeat"></i> Volver</button>
+                                        <button type="button" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-file"></i> Generar</button>
+                                        <button type="button" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-send"></i> Enviar Correo</button>
+                                        <h:commandButton id="btnFirma" action="#{MbFirma.varData}" value="Firmar" disabled="true" styleClass="btn btn-default btn-sm"/>
+
+                                        <h:inputHidden id="apellidos" value="#{MbFirma.apellidos}"/>
+                                        <h:inputHidden id="ciVencida" value="#{MbFirma.ciVencida}"/>
+                                        <h:inputHidden id="nacionalidad" value="#{MbFirma.nacionalidad}"/>
+                                        <h:inputHidden id="fechaNacimiento" value="#{MbFirma.fechaNacimiento}"/>
+                                        <h:inputHidden id="fechaVencimiento" value="#{MbFirma.fechaVencimiento}"/>
+                                        <h:inputHidden id="genero" value="#{MbFirma.genero}"/>
+                                        <h:inputHidden id="nombres" value="#{MbFirma.nombres}"/>
+                                        <h:inputHidden id="numeroSerie" value="#{MbFirma.numeroSerie}"/>
+                                        <h:inputHidden id="numeroTransaccion" value="#{MbFirma.numeroTransaccion}"/>
+                                        <h:inputHidden id="resultadoTransaccion" value="#{MbFirma.resultadoTransaccion}"/>
+                                        <h:inputHidden id="run" value="#{MbFirma.run}"/>
+                                        <h:inputHidden id="tipoCedula" value="#{MbFirma.tipoCedula}"/>
+                                        <h:inputHidden id="estadoCargaVista" value="#{MbFirma.estadoCargaVista}"/>
+                                        <h:inputHidden id="estadoInicioApplet" value="#{MbFirma.estadoInicioApplet}"/>
+                                        <h:inputHidden id="estadoRegistro" value="#{MbFirma.estadoRegistro}"/>
+                                    </div>
+                                    <br />
+                                    <div class="row">
+                                        <applet code="jtoc\v3\Main" name="myApplet" archive="jtocv3.jar" width="540" height="160">
+                                            <PARAM name="URLTOC" value="http://web.tocbiometrics.com/tocwebsv/ver3/wsTOC3.php" />
+                                            <PARAM name="URLNUEVACI" value="http://web.tocbiometrics.com/tocwebsv/wsTOCNewCI.php" />
+                                            <PARAM name="URLCHILENOS" value="https://web.tocbiometrics.com:8443/wsTOCChileans/ChileansWS" />
+
+                                            <PARAM name="CancelarVisible" value="false" />
+
+                                            <PARAM name="java_version" value="1.6+" />
+                                            <PARAM name="separate_jvm" value="true" />
+                                        </applet>
+
+                                    </div>	
+
+                                </div>
+                                <div class="col-lg-7 col-md-7 col-sm-7 ">
+                                    <h5 class="panel-title" style="margin-left: -15px">Documentos Pendientes</h5>
+                                    <div class="row pre-scrollable" style="max-height: 160px;">
+
+                                        <h:dataTable styleClass="table table-striped" style="font-size: 10px;" id="tableDocumentos" value="#{MbFirma.documentos}" var="o" >
+
+                                            <h:column >
+                                                <f:facet name="header">
+                                                    Documento
+                                                </f:facet>                                      
+                                                <h:commandLink value="#{o.nombreDocumento}"  action="#{MbFirma.consultarDocumento(o.idActividad)}" >
+                                                    <f:ajax render="detalleDocumento" />
+                                                </h:commandLink>
+                                            </h:column>  
+
+                                            <h:column >
+                                                <f:facet name="header">
+                                                    S
+                                                </f:facet>
+                                            </h:column>  
+
+                                            <h:column >
+                                                <f:facet name="header">
+                                                    F. Firma
+                                                </f:facet>
+                                            </h:column>  
+
+                                            <h:column >
+                                                <f:facet name="header">
+                                                    A1
+                                                </f:facet>
+                                            </h:column>  
+
+
+                                            <h:column >
+                                                <f:facet name="header">
+                                                    F. Firma
+                                                </f:facet>
+                                            </h:column>  
+
+                                            <h:column >
+                                                <f:facet name="header">
+                                                    A2
+                                                </f:facet>
+                                            </h:column>  
+
+
+                                            <h:column >
+                                                <f:facet name="header">
+                                                    F. Firma
+                                                </f:facet>
+                                            </h:column>  
+
+                                            <h:column >
+                                                <f:facet name="header">
+                                                    Estado
+                                                </f:facet>
+                                            </h:column>  
+                                        </h:dataTable>
+                                    </div>	
+                                </div>
+
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <iframe class="pdf" id="pdf" src="resources/guice_002.pdf"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+            <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+
+        </h:form>
+    </h:body>
+</html>
