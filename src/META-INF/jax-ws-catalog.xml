@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="file:/home/oscar/Documentos/Pagina%20Web%20de%20Firma%20Electronica%20de%20Documentos/Diseño/Webservices/WSDL/CheckinDocOp.wsdl" uri="wsdl/CheckinDocOp.wsdl"/>
+    <system systemId="http://lasiewebsit.ccaf.andes:8080/enterprise/EntCheckInDocumentoService?WSDL" uri="wsdl/lasiewebsit.ccaf.andes_8080/enterprise/EntCheckInDocumentoService.wsdl"/>
+</catalog>
