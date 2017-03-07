@@ -48,7 +48,7 @@ public class ListarDocumentosOPIntegracion {
                     documentoVO.setIdItemOfertaEconomica(quoteItem.getId());
                     documentoVO.setIdOfertaEconomicaPadre(quoteItem.getQuoteId());
                     
-                    
+                    System.out.println("action.getId() "+action.getId());
                     documentoVO.setFlagFirmaDigital(action.getOCSFirmaDigitalFlag());
                     documentoVO.setIdActividad(action.getId());
                     documentoVO.setIdDocumento(action.getOCSIdDocumento());

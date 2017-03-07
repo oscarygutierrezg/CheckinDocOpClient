@@ -1,1 +1,3 @@
 .pdf { width: 100%; height: 100%;}
+
+$('a.media').media({width:500, height:400});

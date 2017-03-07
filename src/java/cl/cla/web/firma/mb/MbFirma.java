@@ -19,6 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -97,6 +98,9 @@ public class MbFirma implements Serializable {
             System.out.println("idActividad " + idActividad);
 
             detalleDocumentoVO = detalleRepController.detalleRepINOperation(idActividad);
+            FacesContext context2 = FacesContext.getCurrentInstance();
+            HttpSession session = (HttpSession) context2.getExternalContext().getSession(true);
+            session.setAttribute("prueba", idActividad);
 
         } catch (FirmaException ex) {
             ex.printStackTrace();

@@ -34,4 +34,15 @@
     <welcome-file-list>
         <welcome-file>web/index.xhtml</welcome-file>
     </welcome-file-list>
+    
+    
+    <servlet>
+        <servlet-name>Servlet Name For Demo1</servlet-name>
+        <servlet-class>cl.cla.web.firma.servlet.ServletDemo1</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>Servlet Name For Demo1</servlet-name>
+        <url-pattern>Demo1</url-pattern>
+    </servlet-mapping>
 </web-app>
