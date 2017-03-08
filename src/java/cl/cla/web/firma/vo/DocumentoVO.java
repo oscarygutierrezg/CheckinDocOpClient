@@ -11,8 +11,9 @@ import java.io.Serializable;
  *
  * @author oscar
  */
-public class DocumentoVO implements Serializable{
+public class DocumentoVO implements Serializable {
 
+    private int id;
     private boolean seleccionado;
     private String idItemOfertaEconomica;
     private String idOfertaEconomicaPadre;
@@ -22,6 +23,16 @@ public class DocumentoVO implements Serializable{
     private String nombreDocumento;
     private String flagFirmaDigital;
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    
+    
     public boolean isSeleccionado() {
         return seleccionado;
     }
@@ -29,9 +40,6 @@ public class DocumentoVO implements Serializable{
     public void setSeleccionado(boolean seleccionado) {
         this.seleccionado = seleccionado;
     }
-
-   
-    
 
     public String getIdItemOfertaEconomica() {
         return idItemOfertaEconomica;
@@ -88,7 +96,5 @@ public class DocumentoVO implements Serializable{
     public void setFlagFirmaDigital(String flagFirmaDigital) {
         this.flagFirmaDigital = flagFirmaDigital;
     }
-    
-    
 
 }

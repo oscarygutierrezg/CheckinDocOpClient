@@ -55,6 +55,7 @@ public class ListarDocumentosOPIntegracion {
                     documentoVO.setIdItemOfertaEconomPadre(action.getParentActivityId());
                     documentoVO.setNombreDocumento(action.getDescription());
                     documentosVO.getDocumentos().add(documentoVO);
+                    documentoVO.setId(documentosVO.getDocumentos().size());
                 }
             } else {
                 throw new FirmaException(errorSpcMessage.value);

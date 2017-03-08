@@ -69,12 +69,32 @@ public class MbFirma implements Serializable {
             ListarDocumentosVO listarDocumentosVO = documentosController.listDocsINOperation(idOferta);
             if (listarDocumentosVO != null) {
                 documentos = listarDocumentosVO.getDocumentos();
+                
+                HttpSession session = (HttpSession) ec.getSession(true);
+                String idActividad =(String) session.getAttribute("idActividad");
+                if(idActividad!=null){
+                    for (DocumentoVO documento : documentos) {
+                        if(documento.getIdActividad().compareTo(idActividad)==0){
+                            documento.setSeleccionado(true);
+                        }
+                    }
+                }
             }
 
         } catch (FirmaException ex) {
             ex.printStackTrace();
             Logger.getLogger(MbFirma.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public String varData1() {
+        System.out.println("varData1");
+        return "index?faces-redirect=true";
+    }
+    
+      public String varData2() {
+        System.out.println("varData2");
+        return "index?faces-redirect=true";
     }
 
     public String varData() {
@@ -100,7 +120,7 @@ public class MbFirma implements Serializable {
             detalleDocumentoVO = detalleRepController.detalleRepINOperation(idActividad);
             FacesContext context2 = FacesContext.getCurrentInstance();
             HttpSession session = (HttpSession) context2.getExternalContext().getSession(true);
-            session.setAttribute("prueba", idActividad);
+            session.setAttribute("idActividad", idActividad);
 
         } catch (FirmaException ex) {
             ex.printStackTrace();

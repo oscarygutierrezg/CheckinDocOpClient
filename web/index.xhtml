@@ -13,9 +13,9 @@
         <h:outputScript name="jsf.js" library="javax.faces"/>
         <script src="js/jquery-1.11.3.min.js" type="text/javascript"/>
         <meta charset="utf-8"/>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        <link rel="stylesheet" href="css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
               crossorigin="anonymous"/>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+        <link rel="stylesheet" href="css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
               crossorigin="anonymous"/>
         <link rel="stylesheet" href="css/style.css" />
 
@@ -121,6 +121,50 @@
                     $('#formDocumentos\\:run').val(document.myApplet.getRut());
                 }
             }
+
+            function validacionFirma() {
+                if (validarSeleccionDocumento()) {
+                    $('#formDocumentos\\:btnFirma').trigger('click');
+                } else {
+                    $('#formNotificacionError\\:descNotificacionError').text('Para poder firmar debe seleccionar al menos un documento');
+                    $('#notificacionError').modal('show');
+                }
+            }
+
+            function validacionSubir() {
+                if (validarSeleccionDocumento()) {
+                    $('#formDocumentos\\:btnSubir').trigger('click');
+                } else {
+                    $('#formNotificacionError\\:descNotificacionError').text('Para poder subir el a Siebel debe seleccionar al menos un documento');
+                    $('#notificacionError').modal('show');
+                }
+            }
+
+            function validarSeleccionSucursal(invoker) {
+                $('#formDocumentos\\:tableDocumentos tr').each(function (index) {
+                    if ($(this).find("input[type=checkbox]").is(':checked')) {
+                        $(this).find("input[type=checkbox]").trigger('click');
+                    }
+                });
+                invoker.trigger('click');
+            }
+
+            function validarSeleccionDocumento() {
+                var count = 0;
+                $('#formDocumentos\\:tableDocumentos tr').each(function (index) {
+                    if ($(this).find("input[type=checkbox]").is(':checked')) {
+                        count++;
+                    }
+                });
+                return  count > 0;
+            }
+
+
+
+            function enlazarLink(id) {
+                console.log(".link" + id);
+                $(".link" + id).trigger("click");
+            }
         </script>
 
     </h:head>
@@ -139,11 +183,13 @@
                             <div class="col-lg-12 col-md-12 col-sm-12">
                                 <div class="col-lg-5 col-md-5 col-sm-5">
                                     <div class="row">
-                                        <button type="button" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-repeat"></i> Volver</button>
-                                        <button type="button" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-file"></i> Generar</button>
-                                        <button type="button" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-send"></i> Enviar Correo</button>
-                                        <h:commandButton id="btnFirma" action="#{MbFirma.varData}" value="Firmar" disabled="true" styleClass="btn btn-default btn-sm"/>
-
+                                        <button type="button" onclick="window.close()" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-repeat"></i> Volver</button>
+                                        <button type="button" onclick="validacionFirma()" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-ok"></i> Firmar</button>
+                                        <button type="button" onclick="validacionSubir()" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-send"></i> Subir a Siebel</button>
+                                        <button type="button" onclick="$('#notificacionRollback').modal('show')" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-trash"></i> RollBack</button>
+                                        <h:commandButton id="btnFirma" action="#{MbFirma.varData}" style="display: none" value="Firmar" disabled="true" styleClass="btn btn-default btn-sm"/>
+                                        <h:commandButton id="btnSubir" action="#{MbFirma.varData1}" style="display: none" value="Subir a Siebel" styleClass="btn btn-default btn-sm"/>
+                                        <h:commandButton id="btnRollback" action="#{MbFirma.varData2}" style="display: none" value="Subir a Siebel" styleClass="btn btn-default btn-sm"/>
                                         <h:inputHidden id="apellidos" value="#{MbFirma.apellidos}"/>
                                         <h:inputHidden id="ciVencida" value="#{MbFirma.ciVencida}"/>
                                         <h:inputHidden id="nacionalidad" value="#{MbFirma.nacionalidad}"/>
@@ -181,12 +227,18 @@
                                     <div class="row pre-scrollable" style="max-height: 160px;">
 
                                         <h:dataTable styleClass="table table-striped" style="font-size: 10px;" id="tableDocumentos" value="#{MbFirma.documentos}" var="o" >
-
+                                            <h:column>
+                                                <f:facet name="header">
+                                                    Seleccione
+                                                </f:facet>
+                                                <h:selectBooleanCheckbox value="#{o.seleccionado}" onclick="validarSeleccionSucursal($(this)); enlazarLink(#{o.id})" styleClass="check#{o.id}">
+                                                </h:selectBooleanCheckbox>
+                                            </h:column>
                                             <h:column >
                                                 <f:facet name="header">
                                                     Documento
                                                 </f:facet>                                      
-                                                <h:commandLink value="#{o.nombreDocumento}"  action="#{MbFirma.consultarDocumento(o.idActividad)}" />
+                                                <h:commandLink value="#{o.nombreDocumento}"  action="#{MbFirma.consultarDocumento(o.idActividad)}"  styleClass="link#{o.id}" />
                                             </h:column>  
 
                                             <h:column >
@@ -241,7 +293,7 @@
                         <hr />
                         <div class="row">
                             <div class="col-lg-12 col-md-12 col-sm-12">
-                                <iframe class="pdf" id="iframePdf" src="#{request.contextPath}/Demo1?p=#{prueba}"/>
+                                <iframe class="pdf" id="iframePdf" src="#{request.contextPath}/ServletDetalleDocumentoPdf?p=#{prueba}"/>
                             </div>
                         </div>
                     </div>
@@ -252,5 +304,60 @@
             crossorigin="anonymous"></script>
 
         </h:form>
+
+        <div id="notificacionError" class="modal fade" tabindex="-1" role="dialog"
+             aria-labelledby="gridSystemModalLabel">
+            <h:form id="formNotificacionError">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">X</span>
+                            </button>
+
+                            <h4 class="modal-title" id="gridSystemModalLabel">Error</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h5> <h:outputText id="descNotificacionError"/>.</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="#" class="btn btn-primary" onclick="$('#notificacionError').modal('hide')">Aceptar</a>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+        </div>
+
+
+
+        <div id="notificacionRollback" class="modal fade" tabindex="-1" role="dialog"
+             aria-labelledby="gridSystemModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">X</span>
+                        </button>
+
+                        <h4 class="modal-title" id="gridSystemModalLabel">Notificaci&#243;n</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h5>Si realiza el rollback de la firma de los documentos ya no podr&#225; volver a firmar digitalmente y obligatoriamente deber&#225; firmar los documentos de forma manual ¿Confirma que desea realizar el rollback de las firmas?.</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#" class="btn btn-primary" onclick="$('#notificacionRollback').modal('hide'); $('#formDocumentos\\:btnRollback').trigger('click');">Si</a>
+                        <a href="#" class="btn btn-primary" onclick="$('#notificacionRollback').modal('hide')">No</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </h:body>
 </html>

@@ -9,7 +9,6 @@
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
-    
     <context-param>
         <param-name>javax.faces.FACELETS_VIEW_MAPPINGS</param-name>
         <param-value>*.xhtml</param-value>
@@ -34,15 +33,12 @@
     <welcome-file-list>
         <welcome-file>web/index.xhtml</welcome-file>
     </welcome-file-list>
-    
-    
     <servlet>
-        <servlet-name>Servlet Name For Demo1</servlet-name>
-        <servlet-class>cl.cla.web.firma.servlet.ServletDemo1</servlet-class>
+        <servlet-name>ServletDetalleDocumentoPdf</servlet-name>
+        <servlet-class>cl.cla.web.firma.servlet.ServletDetalleDocumentoPdf</servlet-class>
     </servlet>
-
     <servlet-mapping>
-        <servlet-name>Servlet Name For Demo1</servlet-name>
-        <url-pattern>Demo1</url-pattern>
+        <servlet-name>ServletDetalleDocumentoPdf</servlet-name>
+        <url-pattern>ServletDetalleDocumentoPdf</url-pattern>
     </servlet-mapping>
 </web-app>
