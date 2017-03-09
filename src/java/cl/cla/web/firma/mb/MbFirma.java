@@ -49,6 +49,8 @@ public class MbFirma implements Serializable {
     private String estadoInicioApplet;
     private String estadoRegistro;
     private String estadoCargaVista;
+    private boolean mostrarFirmar;
+    private boolean mostrarSubir;
 
     public MbFirma() {
         documentosController = new ListarDocumentosControllerImpl();
@@ -69,12 +71,12 @@ public class MbFirma implements Serializable {
             ListarDocumentosVO listarDocumentosVO = documentosController.listDocsINOperation(idOferta);
             if (listarDocumentosVO != null) {
                 documentos = listarDocumentosVO.getDocumentos();
-                
+
                 HttpSession session = (HttpSession) ec.getSession(true);
-                String idActividad =(String) session.getAttribute("idActividad");
-                if(idActividad!=null){
+                String idActividad = (String) session.getAttribute("idActividad");
+                if (idActividad != null) {
                     for (DocumentoVO documento : documentos) {
-                        if(documento.getIdActividad().compareTo(idActividad)==0){
+                        if (documento.getIdActividad().compareTo(idActividad) == 0) {
                             documento.setSeleccionado(true);
                         }
                     }
@@ -89,10 +91,11 @@ public class MbFirma implements Serializable {
 
     public String varData1() {
         System.out.println("varData1");
+        mostrarSubir = true;
         return "index?faces-redirect=true";
     }
-    
-      public String varData2() {
+
+    public String varData2() {
         System.out.println("varData2");
         return "index?faces-redirect=true";
     }
@@ -110,10 +113,12 @@ public class MbFirma implements Serializable {
         System.out.println("resultadoTransaccion " + resultadoTransaccion);
         System.out.println("ciVencida " + ciVencida);
         System.out.println("tipoCedula " + tipoCedula);
+        mostrarFirmar = true;
+        mostrarSubir = true;
         return "index?faces-redirect=true";
     }
 
-    public String consultarDocumento(String idActividad) {
+    public void consultarDocumento(String idActividad) {
         try {
             System.out.println("idActividad " + idActividad);
 
@@ -121,12 +126,28 @@ public class MbFirma implements Serializable {
             FacesContext context2 = FacesContext.getCurrentInstance();
             HttpSession session = (HttpSession) context2.getExternalContext().getSession(true);
             session.setAttribute("idActividad", idActividad);
+            actualizarSeleccionado(idActividad);
 
         } catch (FirmaException ex) {
             ex.printStackTrace();
             Logger.getLogger(MbFirma.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return "index?faces-redirect=true";
+    }
+
+    public boolean isMostrarFirmar() {
+        return mostrarFirmar;
+    }
+
+    public void setMostrarFirmar(boolean mostrarFirmar) {
+        this.mostrarFirmar = mostrarFirmar;
+    }
+
+    public boolean isMostrarSubir() {
+        return mostrarSubir;
+    }
+
+    public void setMostrarSubir(boolean mostrarSubir) {
+        this.mostrarSubir = mostrarSubir;
     }
 
     public String getIdOferta() {
@@ -295,6 +316,19 @@ public class MbFirma implements Serializable {
 
     public void setEstadoCargaVista(String estadoCargaVista) {
         this.estadoCargaVista = estadoCargaVista;
+    }
+
+    private void actualizarSeleccionado(String idActividad) {
+        for (DocumentoVO documento : documentos) {
+            if (documento.getIdActividad().compareTo(idActividad) == 0) {
+                System.out.println("true");
+                documento.setSeleccionado(true);
+            } 
+            else {
+                documento.setSeleccionado(false);
+                System.out.println("false");
+            }
+        }
     }
 
 }
